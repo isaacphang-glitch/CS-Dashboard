@@ -12,137 +12,142 @@
     background: #0a0910;
     color: #e8e6f0;
     font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
   }
 
   body {
     display: flex;
     flex-direction: column;
-    padding: 36px 48px;
-    min-height: 100vh;
+    padding: 28px 36px;
+    height: 100vh;
   }
 
   .header {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
-    margin-bottom: 28px;
-    padding-bottom: 24px;
+    margin-bottom: 20px;
+    padding-bottom: 18px;
     border-bottom: 1px solid #1e1b2e;
+    flex-shrink: 0;
   }
-
-  .header-left { display: flex; flex-direction: column; gap: 8px; }
 
   .page-title {
     font-family: 'Syne', sans-serif;
-    font-size: 34px;
+    font-size: 28px;
     font-weight: 700;
     color: #ffffff;
-    letter-spacing: 0.01em;
     line-height: 1;
-  }
-
-  .page-subtitle { font-size: 14px; color: #6b6880; }
-
-  .header-right { display: flex; align-items: flex-start; gap: 16px; }
-
-  .period-toggle {
-    display: flex;
-    background: #16141f;
-    border: 1px solid #2a2835;
-    border-radius: 10px;
-    padding: 4px;
-    gap: 2px;
-  }
-
-  .period-btn {
-    background: none;
-    border: none;
-    color: #6b6880;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    padding: 8px 16px;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.04em;
-  }
-
-  .period-btn:hover { color: #c4c1d4; }
-
-  .period-btn.active {
-    background: #2d2040;
-    color: #a78bfa;
-  }
-
-  .total-block {
-    background: #16141f;
-    border: 1px solid #2a2835;
-    border-radius: 14px;
-    padding: 16px 28px;
-    text-align: center;
-  }
-
-  .total-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #6b6880;
     margin-bottom: 4px;
   }
 
-  .total-value {
+  .page-subtitle { font-size: 13px; color: #6b6880; }
+
+  .header-stats {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .hstat {
+    background: #16141f;
+    border: 1px solid #2a2835;
+    border-radius: 12px;
+    padding: 10px 20px;
+    text-align: center;
+    min-width: 100px;
+  }
+
+  .hstat.accent { border-color: #7c3aed40; }
+
+  .hstat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6b6880;
+    margin-bottom: 3px;
+  }
+
+  .hstat-value {
     font-family: 'DM Sans', sans-serif;
-    font-size: 44px;
+    font-size: 30px;
     font-weight: 700;
     color: #a78bfa;
     line-height: 1;
   }
 
-  .total-sub { font-size: 12px; color: #6b6880; margin-top: 3px; }
+  .hstat-value.white { color: #e8e6f0; }
 
-  .main-grid {
+  /* MAIN LAYOUT */
+  .main {
     display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 24px;
+    grid-template-columns: 1fr 1fr 1fr 220px;
+    gap: 16px;
     flex: 1;
+    min-height: 0;
   }
 
-  .section-label {
-    font-size: 11px;
+  /* LEADERBOARD COLUMNS */
+  .lb-col {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .col-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+  }
+
+  .col-title {
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: #4a4760;
-    margin-bottom: 14px;
   }
 
-  .leaderboard { display: flex; flex-direction: column; gap: 8px; }
+  .col-total {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #6b6880;
+  }
+
+  .leaderboard {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    overflow: hidden;
+    flex: 1;
+  }
 
   .lb-row {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
     background: #16141f;
-    border-radius: 11px;
-    padding: 14px 18px;
+    border-radius: 9px;
+    padding: 10px 14px;
     border: 1px solid #1e1b2e;
-    transition: opacity 0.3s;
+    flex-shrink: 0;
   }
 
   .lb-row.first { border-color: #7c3aed50; background: #1a1628; }
 
   .lb-row.offline {
-    opacity: 0.4;
-    border-color: #1e1b2e;
+    opacity: 0.35;
     background: #13111a;
   }
 
   .rank {
     font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
-    width: 20px;
+    width: 16px;
     text-align: center;
     color: #3d3a52;
     flex-shrink: 0;
@@ -152,120 +157,139 @@
   .rank.silver { color: #94a3b8; }
   .rank.bronze { color: #c2855a; }
 
-  .member-name { flex: 1; font-size: 16px; font-weight: 400; color: #c4c1d4; display: flex; align-items: center; gap: 8px; }
+  .member-name {
+    flex: 1;
+    font-size: 13px;
+    font-weight: 400;
+    color: #c4c1d4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
 
   .tl-badge {
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 700;
     letter-spacing: 0.06em;
     background: #2d2040;
     color: #a78bfa;
     border: 1px solid #7c3aed40;
-    border-radius: 4px;
-    padding: 2px 6px;
+    border-radius: 3px;
+    padding: 1px 5px;
+    flex-shrink: 0;
   }
 
   .offline-badge {
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 700;
-    letter-spacing: 0.06em;
     background: #1e1b2e;
     color: #4a4760;
     border: 1px solid #2a2835;
-    border-radius: 4px;
-    padding: 2px 6px;
+    border-radius: 3px;
+    padding: 1px 5px;
+    flex-shrink: 0;
   }
 
   .bar-wrap {
-    width: 140px;
-    height: 7px;
+    width: 60px;
+    height: 5px;
     background: #2a2835;
-    border-radius: 4px;
+    border-radius: 3px;
     overflow: hidden;
     flex-shrink: 0;
   }
 
-  .bar-fill { height: 100%; border-radius: 4px; background: #5b21b6; transition: width 0.6s ease; }
+  .bar-fill { height: 100%; border-radius: 3px; background: #5b21b6; transition: width 0.6s ease; }
   .bar-fill.top { background: #a78bfa; }
   .lb-row.offline .bar-fill { background: #2a2835; }
 
   .booking-count {
     font-family: 'DM Sans', sans-serif;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 700;
     color: #e8e6f0;
-    min-width: 28px;
+    min-width: 20px;
     text-align: right;
     flex-shrink: 0;
   }
 
   .lb-row.offline .booking-count { color: #3d3a52; }
 
-  .right-col { display: flex; flex-direction: column; gap: 18px; }
+  /* RIGHT COLUMN */
+  .right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+  }
 
   .award-card {
     background: #16141f;
     border: 1px solid #7c3aed40;
     border-radius: 14px;
-    padding: 24px 20px;
+    padding: 20px 16px;
     text-align: center;
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 0;
   }
 
-  .award-star { font-size: 36px; line-height: 1; margin-bottom: 12px; }
+  .award-star { font-size: 28px; line-height: 1; margin-bottom: 10px; }
 
   .award-title {
-    font-size: 10px;
+    font-size: 9px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: #4a4760;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .award-name {
     font-family: 'Syne', sans-serif;
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 700;
     color: #ffffff;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     line-height: 1.1;
   }
 
-  .award-sub { font-size: 12px; color: #a78bfa; }
-  .award-empty { font-size: 13px; color: #3d3a52; font-style: italic; }
-
-  .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .award-sub { font-size: 11px; color: #a78bfa; }
+  .award-empty { font-size: 12px; color: #3d3a52; font-style: italic; }
 
   .stat-card {
     background: #16141f;
     border: 1px solid #1e1b2e;
-    border-radius: 11px;
-    padding: 14px;
+    border-radius: 10px;
+    padding: 12px;
     text-align: center;
+    flex-shrink: 0;
   }
 
   .stat-val {
     font-family: 'DM Sans', sans-serif;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 700;
     color: #e8e6f0;
     line-height: 1;
   }
 
-  .stat-lbl { font-size: 11px; color: #6b6880; margin-top: 4px; }
+  .stat-lbl { font-size: 10px; color: #6b6880; margin-top: 3px; }
 
+  /* FOOTER */
   .footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 20px;
-    margin-top: auto;
-    gap: 8px;
-    font-size: 11px;
+    padding-top: 12px;
+    flex-shrink: 0;
+    gap: 7px;
+    font-size: 10px;
     color: #3d3a52;
   }
 
@@ -289,34 +313,50 @@
 <body>
 
 <div class="header">
-  <div class="header-left">
+  <div>
     <h1 class="page-title">CS Bookings</h1>
     <p class="page-subtitle" id="today-date"></p>
   </div>
-  <div class="header-right">
-    <div class="period-toggle">
-      <button class="period-btn active" data-period="daily"   onclick="setPeriod('daily')">Daily</button>
-      <button class="period-btn"        data-period="weekly"  onclick="setPeriod('weekly')">Weekly</button>
-      <button class="period-btn"        data-period="monthly" onclick="setPeriod('monthly')">Monthly</button>
+  <div class="header-stats">
+    <div class="hstat accent">
+      <p class="hstat-label">Today</p>
+      <p class="hstat-value" id="total-daily">&#8212;</p>
     </div>
-    <div class="total-block">
-      <p class="total-label">Team total</p>
-      <p class="total-value" id="team-total">&#8212;</p>
-      <p class="total-sub" id="total-sub">bookings today</p>
+    <div class="hstat">
+      <p class="hstat-label">This week</p>
+      <p class="hstat-value white" id="total-weekly">&#8212;</p>
+    </div>
+    <div class="hstat">
+      <p class="hstat-label">This month</p>
+      <p class="hstat-value white" id="total-monthly">&#8212;</p>
+    </div>
+    <div class="hstat">
+      <p class="hstat-label">Online now</p>
+      <p class="hstat-value white" id="stat-online">&#8212;</p>
     </div>
   </div>
 </div>
 
-<div class="main-grid">
-  <div>
-    <p class="section-label" id="lb-label">Leaderboard — Today</p>
-    <div class="leaderboard" id="leaderboard">
-      <div class="lb-row">
-        <span class="rank">&#8212;</span>
-        <span class="member-name" style="color:#3d3a52">Loading data...</span>
-        <span class="booking-count" style="color:#3d3a52">&#8212;</span>
-      </div>
+<div class="main">
+  <div class="lb-col">
+    <div class="col-header">
+      <span class="col-title">Today</span>
     </div>
+    <div class="leaderboard" id="lb-daily"></div>
+  </div>
+
+  <div class="lb-col">
+    <div class="col-header">
+      <span class="col-title">This week</span>
+    </div>
+    <div class="leaderboard" id="lb-weekly"></div>
+  </div>
+
+  <div class="lb-col">
+    <div class="col-header">
+      <span class="col-title">This month</span>
+    </div>
+    <div class="leaderboard" id="lb-monthly"></div>
   </div>
 
   <div class="right-col">
@@ -327,16 +367,9 @@
         <p class="award-empty">Not yet awarded</p>
       </div>
     </div>
-
-    <div class="stats-row">
-      <div class="stat-card">
-        <p class="stat-val" id="stat-active">&#8212;</p>
-        <p class="stat-lbl">Online now</p>
-      </div>
-      <div class="stat-card">
-        <p class="stat-val" id="stat-avg">&#8212;</p>
-        <p class="stat-lbl" id="avg-label">Avg today</p>
-      </div>
+    <div class="stat-card">
+      <p class="stat-val" id="stat-avg">&#8212;</p>
+      <p class="stat-lbl">Avg bookings today</p>
     </div>
   </div>
 </div>
@@ -350,14 +383,6 @@
   var API = 'https://script.google.com/macros/s/AKfycbz-bueh8tomgh9mel8ATCA_1DKJyUYFnBXWcJ6t8aP333Vwkqx6rHXCHvOQDuTaa1Sz/exec';
   var REFRESH_MS = 30000;
   var RANK_CLASS = ['gold', 'silver', 'bronze'];
-  var currentPeriod = 'daily';
-  var lastData = null;
-
-  var PERIOD_LABELS = {
-    daily:   { lb: 'Leaderboard \u2014 Today',     sub: 'bookings today',    avg: 'Avg today' },
-    weekly:  { lb: 'Leaderboard \u2014 This week', sub: 'bookings this week', avg: 'Avg this week' },
-    monthly: { lb: 'Leaderboard \u2014 This month',sub: 'bookings this month',avg: 'Avg this month' }
-  };
 
   function setDate() {
     document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-AU', {
@@ -365,47 +390,29 @@
     });
   }
 
-  function setPeriod(period) {
-    currentPeriod = period;
-    var btns = document.querySelectorAll('.period-btn');
-    for (var i = 0; i < btns.length; i++) {
-      btns[i].classList.toggle('active', btns[i].getAttribute('data-period') === period);
-    }
-    var labels = PERIOD_LABELS[period];
-    document.getElementById('lb-label').textContent    = labels.lb;
-    document.getElementById('total-sub').textContent   = labels.sub;
-    document.getElementById('avg-label').textContent   = labels.avg;
-    if (lastData) renderAll(lastData);
-  }
-
-  function renderLeaderboard(members, period) {
+  function buildLeaderboard(containerId, members, period) {
     var active  = members.filter(function(m) { return m.status === 'active'; });
     var offline = members.filter(function(m) { return m.status !== 'active'; });
-
     var activeSorted  = active.slice().sort(function(a, b) { return b[period] - a[period]; });
     var offlineSorted = offline.slice().sort(function(a, b) { return b[period] - a[period]; });
     var sorted = activeSorted.concat(offlineSorted);
-
-    var max = activeSorted[0] ? (activeSorted[0][period] || 1) : 1;
-    var lb  = document.getElementById('leaderboard');
+    var max = (activeSorted[0] && activeSorted[0][period] > 0) ? activeSorted[0][period] : 1;
+    var lb = document.getElementById(containerId);
     lb.innerHTML = '';
-
     var rank = 0;
+
     for (var i = 0; i < sorted.length; i++) {
-      var m       = sorted[i];
-      var isOff   = m.status !== 'active';
+      var m     = sorted[i];
+      var isOff = m.status !== 'active';
       if (!isOff) rank++;
-
-      var pct     = isOff ? Math.round((m[period] / max) * 100) : Math.round((m[period] / max) * 100);
-      var row     = document.createElement('div');
+      var pct     = Math.round((m[period] / max) * 100);
       var isFirst = (i === 0 && !isOff && m[period] > 0);
+      var row     = document.createElement('div');
       row.className = 'lb-row' + (isFirst ? ' first' : '') + (isOff ? ' offline' : '');
-
       var rankStr  = isOff ? '&#8212;' : rank;
       var rankCls  = isOff ? '' : (RANK_CLASS[rank - 1] || '');
-      var tlBadge  = m.role === 'TL'     ? '<span class="tl-badge">TL</span>'      : '';
-      var offBadge = isOff               ? '<span class="offline-badge">Offline</span>' : '';
-
+      var tlBadge  = m.role === 'TL' ? '<span class="tl-badge">TL</span>' : '';
+      var offBadge = isOff ? '<span class="offline-badge">Offline</span>' : '';
       row.innerHTML =
         '<span class="rank ' + rankCls + '">' + rankStr + '</span>' +
         '<span class="member-name">' + m.name + tlBadge + offBadge + '</span>' +
@@ -413,12 +420,6 @@
         '<span class="booking-count">' + m[period] + '</span>';
       lb.appendChild(row);
     }
-
-    var activeBookings = activeSorted.reduce(function(s, m) { return s + m[period]; }, 0);
-    var total = members.reduce(function(s, m) { return s + m[period]; }, 0);
-    document.getElementById('team-total').textContent  = total;
-    document.getElementById('stat-active').textContent = active.length;
-    document.getElementById('stat-avg').textContent    = active.length ? Math.round(activeBookings / active.length) : 0;
   }
 
   function renderAward(winner) {
@@ -431,15 +432,29 @@
   }
 
   function renderAll(data) {
-    renderLeaderboard(data.members, currentPeriod);
+    var members = data.members;
+    buildLeaderboard('lb-daily',   members, 'daily');
+    buildLeaderboard('lb-weekly',  members, 'weekly');
+    buildLeaderboard('lb-monthly', members, 'monthly');
     renderAward(data.award);
+
+    var active = members.filter(function(m) { return m.status === 'active'; });
+    var totalDaily   = members.reduce(function(s, m) { return s + m.daily;   }, 0);
+    var totalWeekly  = members.reduce(function(s, m) { return s + m.weekly;  }, 0);
+    var totalMonthly = members.reduce(function(s, m) { return s + m.monthly; }, 0);
+    var activeDaily  = active.reduce(function(s, m)  { return s + m.daily;   }, 0);
+
+    document.getElementById('total-daily').textContent   = totalDaily;
+    document.getElementById('total-weekly').textContent  = totalWeekly;
+    document.getElementById('total-monthly').textContent = totalMonthly;
+    document.getElementById('stat-online').textContent   = active.length;
+    document.getElementById('stat-avg').textContent      = active.length ? Math.round(activeDaily / active.length) : 0;
   }
 
   function fetchData() {
     fetch(API)
       .then(function(res) { return res.json(); })
       .then(function(data) {
-        lastData = data;
         renderAll(data);
         document.getElementById('update-time').textContent =
           'Live \u00b7 Last updated ' + new Date().toLocaleTimeString('en-AU', {
