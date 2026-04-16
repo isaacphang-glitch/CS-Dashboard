@@ -23,6 +23,7 @@
     height: 100vh;
   }
 
+  /* HEADER */
   .header {
     display: flex;
     align-items: center;
@@ -44,22 +45,18 @@
 
   .page-subtitle { font-size: 13px; color: #6b6880; }
 
-  .header-stats {
-    display: flex;
-    gap: 12px;
-    align-items: stretch;
-  }
+  .header-stats { display: flex; gap: 12px; align-items: stretch; }
 
   .hstat {
     background: #16141f;
     border: 1px solid #2a2835;
     border-radius: 12px;
-    padding: 10px 20px;
+    padding: 10px 22px;
     text-align: center;
-    min-width: 100px;
+    min-width: 110px;
   }
 
-  .hstat.accent { border-color: #7c3aed40; }
+  .hstat.accent { border-color: #7c3aed50; }
 
   .hstat-label {
     font-size: 10px;
@@ -79,28 +76,43 @@
 
   .hstat-value.white { color: #e8e6f0; }
 
-  /* MAIN LAYOUT */
+  /* MAIN LAYOUT: left = today + below row, right = sidebar */
   .main {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 220px;
+    grid-template-columns: 1fr 240px;
     gap: 16px;
     flex: 1;
     min-height: 0;
   }
 
-  /* LEADERBOARD COLUMNS */
-  .lb-col {
+  .left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 0;
+  }
+
+  /* TODAY — tall hero leaderboard */
+  .today-section {
+    flex: 2;
     display: flex;
     flex-direction: column;
     min-height: 0;
   }
 
-  .col-header {
+  /* WEEK + MONTH row */
+  .bottom-row {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    min-height: 0;
+  }
+
+  .lb-col {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    flex-shrink: 0;
+    flex-direction: column;
+    min-height: 0;
   }
 
   .col-title {
@@ -108,58 +120,50 @@
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: #4a4760;
-  }
-
-  .col-total {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    color: #6b6880;
+    margin-bottom: 8px;
+    flex-shrink: 0;
   }
 
   .leaderboard {
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 6px;
     overflow: hidden;
     flex: 1;
   }
 
+  /* TODAY rows — larger */
   .lb-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     background: #16141f;
-    border-radius: 9px;
-    padding: 10px 14px;
+    border-radius: 10px;
     border: 1px solid #1e1b2e;
     flex-shrink: 0;
   }
 
-  .lb-row.first { border-color: #7c3aed50; background: #1a1628; }
-
-  .lb-row.offline {
-    opacity: 0.35;
-    background: #13111a;
-  }
+  .lb-row.size-lg  { padding: 13px 18px; }
+  .lb-row.size-sm  { padding: 9px 14px; }
+  .lb-row.first    { border-color: #7c3aed50; background: #1a1628; }
+  .lb-row.offline  { opacity: 0.35; background: #13111a; border-color: #1e1b2e; }
 
   .rank {
     font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
     font-weight: 700;
-    width: 16px;
     text-align: center;
     color: #3d3a52;
     flex-shrink: 0;
   }
 
+  .rank.lg { font-size: 13px; width: 20px; }
+  .rank.sm { font-size: 11px; width: 16px; }
   .rank.gold   { color: #f59e0b; }
   .rank.silver { color: #94a3b8; }
   .rank.bronze { color: #c2855a; }
 
   .member-name {
     flex: 1;
-    font-size: 13px;
     font-weight: 400;
     color: #c4c1d4;
     white-space: nowrap;
@@ -167,8 +171,11 @@
     text-overflow: ellipsis;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
   }
+
+  .member-name.lg { font-size: 15px; }
+  .member-name.sm { font-size: 12px; }
 
   .tl-badge {
     font-size: 8px;
@@ -194,7 +201,6 @@
   }
 
   .bar-wrap {
-    width: 60px;
     height: 5px;
     background: #2a2835;
     border-radius: 3px;
@@ -202,23 +208,26 @@
     flex-shrink: 0;
   }
 
+  .bar-wrap.lg { width: 120px; }
+  .bar-wrap.sm { width: 60px; }
+
   .bar-fill { height: 100%; border-radius: 3px; background: #5b21b6; transition: width 0.6s ease; }
   .bar-fill.top { background: #a78bfa; }
   .lb-row.offline .bar-fill { background: #2a2835; }
 
   .booking-count {
     font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
     font-weight: 700;
     color: #e8e6f0;
-    min-width: 20px;
     text-align: right;
     flex-shrink: 0;
   }
 
+  .booking-count.lg { font-size: 20px; min-width: 28px; }
+  .booking-count.sm { font-size: 14px; min-width: 20px; }
   .lb-row.offline .booking-count { color: #3d3a52; }
 
-  /* RIGHT COLUMN */
+  /* RIGHT SIDEBAR */
   .right-col {
     display: flex;
     flex-direction: column;
@@ -252,7 +261,7 @@
 
   .award-name {
     font-family: 'Syne', sans-serif;
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 700;
     color: #ffffff;
     margin-bottom: 4px;
@@ -273,7 +282,7 @@
 
   .stat-val {
     font-family: 'DM Sans', sans-serif;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
     color: #e8e6f0;
     line-height: 1;
@@ -338,25 +347,24 @@
 </div>
 
 <div class="main">
-  <div class="lb-col">
-    <div class="col-header">
-      <span class="col-title">Today</span>
-    </div>
-    <div class="leaderboard" id="lb-daily"></div>
-  </div>
+  <div class="left-col">
 
-  <div class="lb-col">
-    <div class="col-header">
-      <span class="col-title">This week</span>
+    <div class="today-section">
+      <p class="col-title">Today</p>
+      <div class="leaderboard" id="lb-daily"></div>
     </div>
-    <div class="leaderboard" id="lb-weekly"></div>
-  </div>
 
-  <div class="lb-col">
-    <div class="col-header">
-      <span class="col-title">This month</span>
+    <div class="bottom-row">
+      <div class="lb-col">
+        <p class="col-title">This week</p>
+        <div class="leaderboard" id="lb-weekly"></div>
+      </div>
+      <div class="lb-col">
+        <p class="col-title">This month</p>
+        <div class="leaderboard" id="lb-monthly"></div>
+      </div>
     </div>
-    <div class="leaderboard" id="lb-monthly"></div>
+
   </div>
 
   <div class="right-col">
@@ -390,34 +398,36 @@
     });
   }
 
-  function buildLeaderboard(containerId, members, period) {
-    var active  = members.filter(function(m) { return m.status === 'active'; });
-    var offline = members.filter(function(m) { return m.status !== 'active'; });
+  function buildLeaderboard(containerId, members, period, size) {
+    var active        = members.filter(function(m) { return m.status === 'active'; });
+    var offline       = members.filter(function(m) { return m.status !== 'active'; });
     var activeSorted  = active.slice().sort(function(a, b) { return b[period] - a[period]; });
     var offlineSorted = offline.slice().sort(function(a, b) { return b[period] - a[period]; });
-    var sorted = activeSorted.concat(offlineSorted);
-    var max = (activeSorted[0] && activeSorted[0][period] > 0) ? activeSorted[0][period] : 1;
-    var lb = document.getElementById(containerId);
-    lb.innerHTML = '';
-    var rank = 0;
+    var sorted        = activeSorted.concat(offlineSorted);
+    var max           = (activeSorted[0] && activeSorted[0][period] > 0) ? activeSorted[0][period] : 1;
+    var lb            = document.getElementById(containerId);
+    lb.innerHTML      = '';
+    var rank          = 0;
 
     for (var i = 0; i < sorted.length; i++) {
-      var m     = sorted[i];
-      var isOff = m.status !== 'active';
+      var m       = sorted[i];
+      var isOff   = m.status !== 'active';
       if (!isOff) rank++;
       var pct     = Math.round((m[period] / max) * 100);
       var isFirst = (i === 0 && !isOff && m[period] > 0);
       var row     = document.createElement('div');
-      row.className = 'lb-row' + (isFirst ? ' first' : '') + (isOff ? ' offline' : '');
+      row.className = 'lb-row size-' + size + (isFirst ? ' first' : '') + (isOff ? ' offline' : '');
+
       var rankStr  = isOff ? '&#8212;' : rank;
-      var rankCls  = isOff ? '' : (RANK_CLASS[rank - 1] || '');
+      var rankCls  = (isOff ? '' : (RANK_CLASS[rank - 1] || '')) + ' ' + size;
       var tlBadge  = m.role === 'TL' ? '<span class="tl-badge">TL</span>' : '';
       var offBadge = isOff ? '<span class="offline-badge">Offline</span>' : '';
+
       row.innerHTML =
         '<span class="rank ' + rankCls + '">' + rankStr + '</span>' +
-        '<span class="member-name">' + m.name + tlBadge + offBadge + '</span>' +
-        '<div class="bar-wrap"><div class="bar-fill ' + (isFirst ? 'top' : '') + '" style="width:' + pct + '%"></div></div>' +
-        '<span class="booking-count">' + m[period] + '</span>';
+        '<span class="member-name ' + size + '">' + m.name + tlBadge + offBadge + '</span>' +
+        '<div class="bar-wrap ' + size + '"><div class="bar-fill ' + (isFirst ? 'top' : '') + '" style="width:' + pct + '%"></div></div>' +
+        '<span class="booking-count ' + size + '">' + m[period] + '</span>';
       lb.appendChild(row);
     }
   }
@@ -433,12 +443,12 @@
 
   function renderAll(data) {
     var members = data.members;
-    buildLeaderboard('lb-daily',   members, 'daily');
-    buildLeaderboard('lb-weekly',  members, 'weekly');
-    buildLeaderboard('lb-monthly', members, 'monthly');
+    buildLeaderboard('lb-daily',   members, 'daily',   'lg');
+    buildLeaderboard('lb-weekly',  members, 'weekly',  'sm');
+    buildLeaderboard('lb-monthly', members, 'monthly', 'sm');
     renderAward(data.award);
 
-    var active = members.filter(function(m) { return m.status === 'active'; });
+    var active       = members.filter(function(m) { return m.status === 'active'; });
     var totalDaily   = members.reduce(function(s, m) { return s + m.daily;   }, 0);
     var totalWeekly  = members.reduce(function(s, m) { return s + m.weekly;  }, 0);
     var totalMonthly = members.reduce(function(s, m) { return s + m.monthly; }, 0);
