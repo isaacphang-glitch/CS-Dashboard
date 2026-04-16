@@ -12,14 +12,13 @@
     background: #0a0910;
     color: #e8e6f0;
     font-family: 'DM Sans', sans-serif;
-    height: 100%;
     min-height: 100vh;
   }
 
   body {
     display: flex;
     flex-direction: column;
-    padding: 40px 48px;
+    padding: 36px 48px;
     min-height: 100vh;
   }
 
@@ -27,60 +26,86 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 36px;
-    padding-bottom: 28px;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
     border-bottom: 1px solid #1e1b2e;
   }
 
+  .header-left { display: flex; flex-direction: column; gap: 8px; }
+
   .page-title {
     font-family: 'Syne', sans-serif;
-    font-size: 36px;
+    font-size: 34px;
     font-weight: 700;
     color: #ffffff;
     letter-spacing: 0.01em;
     line-height: 1;
-    margin-bottom: 8px;
   }
 
-  .page-subtitle {
-    font-size: 15px;
+  .page-subtitle { font-size: 14px; color: #6b6880; }
+
+  .header-right { display: flex; align-items: flex-start; gap: 16px; }
+
+  .period-toggle {
+    display: flex;
+    background: #16141f;
+    border: 1px solid #2a2835;
+    border-radius: 10px;
+    padding: 4px;
+    gap: 2px;
+  }
+
+  .period-btn {
+    background: none;
+    border: none;
     color: #6b6880;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.04em;
+  }
+
+  .period-btn:hover { color: #c4c1d4; }
+
+  .period-btn.active {
+    background: #2d2040;
+    color: #a78bfa;
   }
 
   .total-block {
     background: #16141f;
     border: 1px solid #2a2835;
-    border-radius: 16px;
-    padding: 18px 32px;
+    border-radius: 14px;
+    padding: 16px 28px;
     text-align: center;
   }
 
   .total-label {
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: #6b6880;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
   .total-value {
     font-family: 'DM Sans', sans-serif;
-    font-size: 52px;
+    font-size: 44px;
     font-weight: 700;
     color: #a78bfa;
     line-height: 1;
   }
 
-  .total-sub {
-    font-size: 13px;
-    color: #6b6880;
-    margin-top: 4px;
-  }
+  .total-sub { font-size: 12px; color: #6b6880; margin-top: 3px; }
 
   .main-grid {
     display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 28px;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
     flex: 1;
   }
 
@@ -89,35 +114,35 @@
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: #4a4760;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
-  .leaderboard {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+  .leaderboard { display: flex; flex-direction: column; gap: 8px; }
 
   .lb-row {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     background: #16141f;
-    border-radius: 12px;
-    padding: 16px 20px;
+    border-radius: 11px;
+    padding: 14px 18px;
     border: 1px solid #1e1b2e;
+    transition: opacity 0.3s;
   }
 
-  .lb-row.first {
-    border-color: #7c3aed50;
-    background: #1a1628;
+  .lb-row.first { border-color: #7c3aed50; background: #1a1628; }
+
+  .lb-row.offline {
+    opacity: 0.4;
+    border-color: #1e1b2e;
+    background: #13111a;
   }
 
   .rank {
     font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
-    width: 22px;
+    width: 20px;
     text-align: center;
     color: #3d3a52;
     flex-shrink: 0;
@@ -127,65 +152,62 @@
   .rank.silver { color: #94a3b8; }
   .rank.bronze { color: #c2855a; }
 
-  .member-name {
-    flex: 1;
-    font-size: 17px;
-    font-weight: 400;
-    color: #c4c1d4;
-  }
+  .member-name { flex: 1; font-size: 16px; font-weight: 400; color: #c4c1d4; display: flex; align-items: center; gap: 8px; }
 
   .tl-badge {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.06em;
     background: #2d2040;
     color: #a78bfa;
     border: 1px solid #7c3aed40;
     border-radius: 4px;
-    padding: 2px 7px;
-    margin-left: 8px;
-    vertical-align: middle;
+    padding: 2px 6px;
+  }
+
+  .offline-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    background: #1e1b2e;
+    color: #4a4760;
+    border: 1px solid #2a2835;
+    border-radius: 4px;
+    padding: 2px 6px;
   }
 
   .bar-wrap {
-    width: 160px;
-    height: 8px;
+    width: 140px;
+    height: 7px;
     background: #2a2835;
     border-radius: 4px;
     overflow: hidden;
     flex-shrink: 0;
   }
 
-  .bar-fill {
-    height: 100%;
-    border-radius: 4px;
-    background: #5b21b6;
-    transition: width 0.6s ease;
-  }
-
+  .bar-fill { height: 100%; border-radius: 4px; background: #5b21b6; transition: width 0.6s ease; }
   .bar-fill.top { background: #a78bfa; }
+  .lb-row.offline .bar-fill { background: #2a2835; }
 
   .booking-count {
     font-family: 'DM Sans', sans-serif;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     color: #e8e6f0;
-    min-width: 32px;
+    min-width: 28px;
     text-align: right;
     flex-shrink: 0;
   }
 
-  .right-col {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+  .lb-row.offline .booking-count { color: #3d3a52; }
+
+  .right-col { display: flex; flex-direction: column; gap: 18px; }
 
   .award-card {
     background: #16141f;
     border: 1px solid #7c3aed40;
-    border-radius: 16px;
-    padding: 28px 24px;
+    border-radius: 14px;
+    padding: 24px 20px;
     text-align: center;
     flex: 1;
     display: flex;
@@ -194,82 +216,62 @@
     justify-content: center;
   }
 
-  .award-star {
-    font-size: 40px;
-    line-height: 1;
-    margin-bottom: 14px;
-  }
+  .award-star { font-size: 36px; line-height: 1; margin-bottom: 12px; }
 
   .award-title {
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: #4a4760;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 
   .award-name {
     font-family: 'Syne', sans-serif;
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 700;
     color: #ffffff;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     line-height: 1.1;
   }
 
-  .award-sub {
-    font-size: 13px;
-    color: #a78bfa;
-  }
+  .award-sub { font-size: 12px; color: #a78bfa; }
+  .award-empty { font-size: 13px; color: #3d3a52; font-style: italic; }
 
-  .award-empty {
-    font-size: 14px;
-    color: #3d3a52;
-    font-style: italic;
-  }
-
-  .stats-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
   .stat-card {
     background: #16141f;
     border: 1px solid #1e1b2e;
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 11px;
+    padding: 14px;
     text-align: center;
   }
 
   .stat-val {
     font-family: 'DM Sans', sans-serif;
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 700;
     color: #e8e6f0;
     line-height: 1;
   }
 
-  .stat-lbl {
-    font-size: 12px;
-    color: #6b6880;
-    margin-top: 5px;
-  }
+  .stat-lbl { font-size: 11px; color: #6b6880; margin-top: 4px; }
 
   .footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 24px;
+    padding-top: 20px;
     margin-top: auto;
     gap: 8px;
-    font-size: 12px;
+    font-size: 11px;
     color: #3d3a52;
   }
 
   .live-dot {
-    width: 7px;
-    height: 7px;
+    width: 6px;
+    height: 6px;
     background: #22c55e;
     border-radius: 50%;
     flex-shrink: 0;
@@ -278,7 +280,7 @@
 
   @keyframes blink {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
+    50%       { opacity: 0.2; }
   }
 
   .error-msg { color: #ef4444; }
@@ -287,20 +289,27 @@
 <body>
 
 <div class="header">
-  <div>
+  <div class="header-left">
     <h1 class="page-title">CS Bookings</h1>
     <p class="page-subtitle" id="today-date"></p>
   </div>
-  <div class="total-block">
-    <p class="total-label">Team total</p>
-    <p class="total-value" id="team-total">&#8212;</p>
-    <p class="total-sub">bookings today</p>
+  <div class="header-right">
+    <div class="period-toggle">
+      <button class="period-btn active" data-period="daily"   onclick="setPeriod('daily')">Daily</button>
+      <button class="period-btn"        data-period="weekly"  onclick="setPeriod('weekly')">Weekly</button>
+      <button class="period-btn"        data-period="monthly" onclick="setPeriod('monthly')">Monthly</button>
+    </div>
+    <div class="total-block">
+      <p class="total-label">Team total</p>
+      <p class="total-value" id="team-total">&#8212;</p>
+      <p class="total-sub" id="total-sub">bookings today</p>
+    </div>
   </div>
 </div>
 
 <div class="main-grid">
   <div>
-    <p class="section-label">Leaderboard</p>
+    <p class="section-label" id="lb-label">Leaderboard — Today</p>
     <div class="leaderboard" id="leaderboard">
       <div class="lb-row">
         <span class="rank">&#8212;</span>
@@ -322,11 +331,11 @@
     <div class="stats-row">
       <div class="stat-card">
         <p class="stat-val" id="stat-active">&#8212;</p>
-        <p class="stat-lbl">Active agents</p>
+        <p class="stat-lbl">Online now</p>
       </div>
       <div class="stat-card">
         <p class="stat-val" id="stat-avg">&#8212;</p>
-        <p class="stat-lbl">Avg bookings</p>
+        <p class="stat-lbl" id="avg-label">Avg today</p>
       </div>
     </div>
   </div>
@@ -338,11 +347,17 @@
 </div>
 
 <script>
-  var SHEET_ID = '1S0qYowci7NxPY8Lqh0yCn74EMtmnGxk9EDfpu1NxQbA';
-  var GID = '0';
+  var API = 'https://script.google.com/a/macros/dilleenpg.com/s/AKfycbyCXEZjoTJjhjaUR3Q7KDi5t623bfGhESsTzIJx_dXs5K089dUpO9E_PVhNX6immqDD/exec';
   var REFRESH_MS = 30000;
-  var API = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/export?format=csv&gid=' + GID;
   var RANK_CLASS = ['gold', 'silver', 'bronze'];
+  var currentPeriod = 'daily';
+  var lastData = null;
+
+  var PERIOD_LABELS = {
+    daily:   { lb: 'Leaderboard \u2014 Today',     sub: 'bookings today',    avg: 'Avg today' },
+    weekly:  { lb: 'Leaderboard \u2014 This week', sub: 'bookings this week', avg: 'Avg this week' },
+    monthly: { lb: 'Leaderboard \u2014 This month',sub: 'bookings this month',avg: 'Avg this month' }
+  };
 
   function setDate() {
     document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-AU', {
@@ -350,44 +365,60 @@
     });
   }
 
-  function parseCSV(text) {
-    var lines = text.trim().split('\n');
-    var result = [];
-    for (var i = 1; i < lines.length; i++) {
-      var cols = lines[i].split(',').map(function(c) { return c.replace(/^"|"$/g, '').trim(); });
-      var name = cols[0] || '';
-      if (name !== '') {
-        result.push({ name: name, colB: cols[1] || '', role: (cols[2] || '').toUpperCase() });
-      }
+  function setPeriod(period) {
+    currentPeriod = period;
+    var btns = document.querySelectorAll('.period-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.toggle('active', btns[i].getAttribute('data-period') === period);
     }
-    return result;
+    var labels = PERIOD_LABELS[period];
+    document.getElementById('lb-label').textContent    = labels.lb;
+    document.getElementById('total-sub').textContent   = labels.sub;
+    document.getElementById('avg-label').textContent   = labels.avg;
+    if (lastData) renderAll(lastData);
   }
 
-  function renderLeaderboard(members) {
-    var sorted = members.slice().sort(function(a, b) { return b.bookings - a.bookings; });
-    var max = sorted[0] ? sorted[0].bookings : 1;
-    if (max === 0) max = 1;
-    var lb = document.getElementById('leaderboard');
+  function renderLeaderboard(members, period) {
+    var active  = members.filter(function(m) { return m.status === 'active'; });
+    var offline = members.filter(function(m) { return m.status !== 'active'; });
+
+    var activeSorted  = active.slice().sort(function(a, b) { return b[period] - a[period]; });
+    var offlineSorted = offline.slice().sort(function(a, b) { return b[period] - a[period]; });
+    var sorted = activeSorted.concat(offlineSorted);
+
+    var max = activeSorted[0] ? (activeSorted[0][period] || 1) : 1;
+    var lb  = document.getElementById('leaderboard');
     lb.innerHTML = '';
 
+    var rank = 0;
     for (var i = 0; i < sorted.length; i++) {
-      var m = sorted[i];
-      var pct = Math.round((m.bookings / max) * 100);
-      var row = document.createElement('div');
-      row.className = 'lb-row' + (i === 0 ? ' first' : '');
-      var tlBadge = m.isTL ? '<span class="tl-badge">TL</span>' : '';
+      var m       = sorted[i];
+      var isOff   = m.status !== 'active';
+      if (!isOff) rank++;
+
+      var pct     = isOff ? Math.round((m[period] / max) * 100) : Math.round((m[period] / max) * 100);
+      var row     = document.createElement('div');
+      var isFirst = (i === 0 && !isOff && m[period] > 0);
+      row.className = 'lb-row' + (isFirst ? ' first' : '') + (isOff ? ' offline' : '');
+
+      var rankStr  = isOff ? '&#8212;' : rank;
+      var rankCls  = isOff ? '' : (RANK_CLASS[rank - 1] || '');
+      var tlBadge  = m.role === 'TL'     ? '<span class="tl-badge">TL</span>'      : '';
+      var offBadge = isOff               ? '<span class="offline-badge">Offline</span>' : '';
+
       row.innerHTML =
-        '<span class="rank ' + (RANK_CLASS[i] || '') + '">' + (i + 1) + '</span>' +
-        '<span class="member-name">' + m.name + tlBadge + '</span>' +
-        '<div class="bar-wrap"><div class="bar-fill ' + (i === 0 ? 'top' : '') + '" style="width:' + pct + '%"></div></div>' +
-        '<span class="booking-count">' + m.bookings + '</span>';
+        '<span class="rank ' + rankCls + '">' + rankStr + '</span>' +
+        '<span class="member-name">' + m.name + tlBadge + offBadge + '</span>' +
+        '<div class="bar-wrap"><div class="bar-fill ' + (isFirst ? 'top' : '') + '" style="width:' + pct + '%"></div></div>' +
+        '<span class="booking-count">' + m[period] + '</span>';
       lb.appendChild(row);
     }
 
-    var total = members.reduce(function(s, m) { return s + m.bookings; }, 0);
-    document.getElementById('team-total').textContent = total;
-    document.getElementById('stat-active').textContent = members.filter(function(m) { return m.bookings > 0; }).length;
-    document.getElementById('stat-avg').textContent = members.length ? Math.round(total / members.length) : 0;
+    var activeBookings = activeSorted.reduce(function(s, m) { return s + m[period]; }, 0);
+    var total = members.reduce(function(s, m) { return s + m[period]; }, 0);
+    document.getElementById('team-total').textContent  = total;
+    document.getElementById('stat-active').textContent = active.length;
+    document.getElementById('stat-avg').textContent    = active.length ? Math.round(activeBookings / active.length) : 0;
   }
 
   function renderAward(winner) {
@@ -399,34 +430,26 @@
     }
   }
 
+  function renderAll(data) {
+    renderLeaderboard(data.members, currentPeriod);
+    renderAward(data.award);
+  }
+
   function fetchData() {
     fetch(API)
-      .then(function(res) { return res.text(); })
-      .then(function(text) {
-        var rows = parseCSV(text);
-        var awardRow = null;
-        var members = [];
-        for (var i = 0; i < rows.length; i++) {
-          if (rows[i].name.toLowerCase() === '__award__') {
-            awardRow = rows[i];
-          } else {
-            members.push({
-              name: rows[i].name,
-              bookings: parseInt(rows[i].colB) || 0,
-              isTL: rows[i].role === 'TL'
-            });
-          }
-        }
-        renderLeaderboard(members);
-        renderAward(awardRow ? awardRow.colB : '');
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        lastData = data;
+        renderAll(data);
         document.getElementById('update-time').textContent =
           'Live \u00b7 Last updated ' + new Date().toLocaleTimeString('en-AU', {
             hour: '2-digit', minute: '2-digit', second: '2-digit'
           });
         document.getElementById('live-dot').style.background = '#22c55e';
       })
-      .catch(function() {
-        document.getElementById('update-time').innerHTML = '<span class="error-msg">Could not load sheet \u2014 check sharing settings</span>';
+      .catch(function(err) {
+        console.error(err);
+        document.getElementById('update-time').innerHTML = '<span class="error-msg">Could not load sheet \u2014 check Apps Script deployment</span>';
         document.getElementById('live-dot').style.background = '#ef4444';
       });
   }
