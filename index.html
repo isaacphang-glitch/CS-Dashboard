@@ -19,56 +19,55 @@
   body {
     display: flex;
     flex-direction: column;
-    padding: 28px 36px;
+    padding: 24px 32px 16px;
     height: 100vh;
   }
 
-  /* HEADER */
   .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
-    padding-bottom: 18px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
     border-bottom: 1px solid #1e1b2e;
     flex-shrink: 0;
   }
 
   .page-title {
     font-family: 'Syne', sans-serif;
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 700;
     color: #ffffff;
     line-height: 1;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
 
-  .page-subtitle { font-size: 13px; color: #6b6880; }
+  .page-subtitle { font-size: 12px; color: #6b6880; }
 
-  .header-stats { display: flex; gap: 12px; align-items: stretch; }
+  .header-stats { display: flex; gap: 10px; }
 
   .hstat {
     background: #16141f;
     border: 1px solid #2a2835;
-    border-radius: 12px;
-    padding: 10px 22px;
+    border-radius: 10px;
+    padding: 8px 18px;
     text-align: center;
-    min-width: 110px;
+    min-width: 100px;
   }
 
   .hstat.accent { border-color: #7c3aed50; }
 
   .hstat-label {
-    font-size: 10px;
+    font-size: 9px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: #6b6880;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
   }
 
   .hstat-value {
     font-family: 'DM Sans', sans-serif;
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 700;
     color: #a78bfa;
     line-height: 1;
@@ -76,11 +75,11 @@
 
   .hstat-value.white { color: #e8e6f0; }
 
-  /* MAIN LAYOUT: left = today + below row, right = sidebar */
+  /* MAIN */
   .main {
     display: grid;
-    grid-template-columns: 1fr 240px;
-    gap: 16px;
+    grid-template-columns: 1fr 220px;
+    gap: 14px;
     flex: 1;
     min-height: 0;
   }
@@ -88,19 +87,17 @@
   .left-col {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
     min-height: 0;
   }
 
-  /* TODAY — tall hero leaderboard */
   .today-section {
-    flex: 2;
+    flex: 1;
     display: flex;
     flex-direction: column;
     min-height: 0;
   }
 
-  /* WEEK + MONTH row */
   .bottom-row {
     flex: 1;
     display: grid;
@@ -116,37 +113,39 @@
   }
 
   .col-title {
-    font-size: 10px;
+    font-size: 9px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: #4a4760;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
     flex-shrink: 0;
   }
 
   .leaderboard {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    overflow: hidden;
     flex: 1;
+    min-height: 0;
   }
 
-  /* TODAY rows — larger */
+  /* rows stretch evenly to fill the leaderboard container */
   .lb-row {
     display: flex;
     align-items: center;
     gap: 12px;
     background: #16141f;
-    border-radius: 10px;
+    border-radius: 9px;
     border: 1px solid #1e1b2e;
-    flex-shrink: 0;
+    flex: 1;
+    min-height: 0;
   }
 
-  .lb-row.size-lg  { padding: 13px 18px; }
-  .lb-row.size-sm  { padding: 9px 14px; }
-  .lb-row.first    { border-color: #7c3aed50; background: #1a1628; }
-  .lb-row.offline  { opacity: 0.35; background: #13111a; border-color: #1e1b2e; }
+  .lb-row + .lb-row { margin-top: 6px; }
+
+  .lb-row.size-lg { padding: 0 18px; }
+  .lb-row.size-sm { padding: 0 14px; }
+  .lb-row.first   { border-color: #7c3aed50; background: #1a1628; }
+  .lb-row.offline { opacity: 0.35; background: #13111a; border-color: #1e1b2e; }
 
   .rank {
     font-family: 'DM Sans', sans-serif;
@@ -157,7 +156,7 @@
   }
 
   .rank.lg { font-size: 13px; width: 20px; }
-  .rank.sm { font-size: 11px; width: 16px; }
+  .rank.sm { font-size: 10px; width: 16px; }
   .rank.gold   { color: #f59e0b; }
   .rank.silver { color: #94a3b8; }
   .rank.bronze { color: #c2855a; }
@@ -171,7 +170,7 @@
     text-overflow: ellipsis;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
   }
 
   .member-name.lg { font-size: 15px; }
@@ -180,7 +179,7 @@
   .tl-badge {
     font-size: 8px;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     background: #2d2040;
     color: #a78bfa;
     border: 1px solid #7c3aed40;
@@ -223,15 +222,15 @@
     flex-shrink: 0;
   }
 
-  .booking-count.lg { font-size: 20px; min-width: 28px; }
-  .booking-count.sm { font-size: 14px; min-width: 20px; }
+  .booking-count.lg { font-size: 20px; min-width: 26px; }
+  .booking-count.sm { font-size: 13px; min-width: 18px; }
   .lb-row.offline .booking-count { color: #3d3a52; }
 
-  /* RIGHT SIDEBAR */
+  /* SIDEBAR */
   .right-col {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     min-height: 0;
   }
 
@@ -239,7 +238,7 @@
     background: #16141f;
     border: 1px solid #7c3aed40;
     border-radius: 14px;
-    padding: 20px 16px;
+    padding: 16px;
     text-align: center;
     flex: 1;
     display: flex;
@@ -249,22 +248,22 @@
     min-height: 0;
   }
 
-  .award-star { font-size: 28px; line-height: 1; margin-bottom: 10px; }
+  .award-star { font-size: 26px; line-height: 1; margin-bottom: 8px; }
 
   .award-title {
     font-size: 9px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: #4a4760;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .award-name {
     font-family: 'Syne', sans-serif;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     color: #ffffff;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     line-height: 1.1;
   }
 
@@ -275,14 +274,14 @@
     background: #16141f;
     border: 1px solid #1e1b2e;
     border-radius: 10px;
-    padding: 12px;
+    padding: 10px;
     text-align: center;
     flex-shrink: 0;
   }
 
   .stat-val {
     font-family: 'DM Sans', sans-serif;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 700;
     color: #e8e6f0;
     line-height: 1;
@@ -290,12 +289,11 @@
 
   .stat-lbl { font-size: 10px; color: #6b6880; margin-top: 3px; }
 
-  /* FOOTER */
   .footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 12px;
+    padding-top: 10px;
     flex-shrink: 0;
     gap: 7px;
     font-size: 10px;
@@ -348,12 +346,10 @@
 
 <div class="main">
   <div class="left-col">
-
     <div class="today-section">
       <p class="col-title">Today</p>
       <div class="leaderboard" id="lb-daily"></div>
     </div>
-
     <div class="bottom-row">
       <div class="lb-col">
         <p class="col-title">This week</p>
@@ -364,7 +360,6 @@
         <div class="leaderboard" id="lb-monthly"></div>
       </div>
     </div>
-
   </div>
 
   <div class="right-col">
@@ -442,7 +437,7 @@
   }
 
   function renderAll(data) {
-    var members = data.members;
+    var members      = data.members;
     buildLeaderboard('lb-daily',   members, 'daily',   'lg');
     buildLeaderboard('lb-weekly',  members, 'weekly',  'sm');
     buildLeaderboard('lb-monthly', members, 'monthly', 'sm');
