@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS Bookings — Daily Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #0a0910;
+    color: #e8e6f0;
+    font-family: 'DM Sans', sans-serif;
+    height: 100%;
+    min-height: 100vh;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 48px;
+    min-height: 100vh;
+  }
+
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #1e1b2e;
+  }
+
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .page-subtitle {
+    font-size: 15px;
+    color: #6b6880;
+  }
+
+  .total-block {
+    background: #16141f;
+    border: 1px solid #2a2835;
+    border-radius: 16px;
+    padding: 18px 32px;
+    text-align: center;
+  }
+
+  .total-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6b6880;
+    margin-bottom: 6px;
+  }
+
+  .total-value {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: #a78bfa;
+    line-height: 1;
+  }
+
+  .total-sub {
+    font-size: 13px;
+    color: #6b6880;
+    margin-top: 4px;
+  }
+
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 28px;
+    flex: 1;
+  }
+
+  .section-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #4a4760;
+    margin-bottom: 16px;
+  }
+
+  .leaderboard {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lb-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #16141f;
+    border-radius: 12px;
+    padding: 16px 20px;
+    border: 1px solid #1e1b2e;
+  }
+
+  .lb-row.first {
+    border-color: #7c3aed50;
+    background: #1a1628;
+  }
+
+  .rank {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    width: 22px;
+    text-align: center;
+    color: #3d3a52;
+    flex-shrink: 0;
+  }
+
+  .rank.gold   { color: #f59e0b; }
+  .rank.silver { color: #94a3b8; }
+  .rank.bronze { color: #c2855a; }
+
+  .member-name {
+    flex: 1;
+    font-size: 17px;
+    font-weight: 400;
+    color: #c4c1d4;
+  }
+
+  .tl-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    background: #2d2040;
+    color: #a78bfa;
+    border: 1px solid #7c3aed40;
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .bar-wrap {
+    width: 160px;
+    height: 8px;
+    background: #2a2835;
+    border-radius: 4px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: #5b21b6;
+    transition: width 0.6s ease;
+  }
+
+  .bar-fill.top { background: #a78bfa; }
+
+  .booking-count {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #e8e6f0;
+    min-width: 32px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .award-card {
+    background: #16141f;
+    border: 1px solid #7c3aed40;
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .award-star {
+    font-size: 40px;
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+
+  .award-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #4a4760;
+    margin-bottom: 14px;
+  }
+
+  .award-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+
+  .award-sub {
+    font-size: 13px;
+    color: #a78bfa;
+  }
+
+  .award-empty {
+    font-size: 14px;
+    color: #3d3a52;
+    font-style: italic;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .stat-card {
+    background: #16141f;
+    border: 1px solid #1e1b2e;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .stat-val {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: #e8e6f0;
+    line-height: 1;
+  }
+
+  .stat-lbl {
+    font-size: 12px;
+    color: #6b6880;
+    margin-top: 5px;
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 24px;
+    margin-top: auto;
+    gap: 8px;
+    font-size: 12px;
+    color: #3d3a52;
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    background: #22c55e;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  .error-msg { color: #ef4444; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1 class="page-title">CS Bookings</h1>
+    <p class="page-subtitle" id="today-date"></p>
+  </div>
+  <div class="total-block">
+    <p class="total-label">Team total</p>
+    <p class="total-value" id="team-total">&#8212;</p>
+    <p class="total-sub">bookings today</p>
+  </div>
+</div>
+
+<div class="main-grid">
+  <div>
+    <p class="section-label">Leaderboard</p>
+    <div class="leaderboard" id="leaderboard">
+      <div class="lb-row">
+        <span class="rank">&#8212;</span>
+        <span class="member-name" style="color:#3d3a52">Loading data...</span>
+        <span class="booking-count" style="color:#3d3a52">&#8212;</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-col">
+    <div class="award-card">
+      <div class="award-star">&#9733;</div>
+      <p class="award-title">Performer of the day</p>
+      <div id="award-display">
+        <p class="award-empty">Not yet awarded</p>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <p class="stat-val" id="stat-active">&#8212;</p>
+        <p class="stat-lbl">Active agents</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-val" id="stat-avg">&#8212;</p>
+        <p class="stat-lbl">Avg bookings</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="live-dot" id="live-dot"></div>
+  <span id="update-time">Connecting to sheet...</span>
+</div>
+
+<script>
+  var SHEET_ID = '1S0qYowci7NxPY8Lqh0yCn74EMtmnGxk9EDfpu1NxQbA';
+  var GID = '0';
+  var REFRESH_MS = 30000;
+  var API = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/export?format=csv&gid=' + GID;
+  var RANK_CLASS = ['gold', 'silver', 'bronze'];
+
+  function setDate() {
+    document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-AU', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+  }
+
+  function parseCSV(text) {
+    var lines = text.trim().split('\n');
+    var result = [];
+    for (var i = 1; i < lines.length; i++) {
+      var cols = lines[i].split(',').map(function(c) { return c.replace(/^"|"$/g, '').trim(); });
+      var name = cols[0] || '';
+      if (name !== '') {
+        result.push({ name: name, colB: cols[1] || '', role: (cols[2] || '').toUpperCase() });
+      }
+    }
+    return result;
+  }
+
+  function renderLeaderboard(members) {
+    var sorted = members.slice().sort(function(a, b) { return b.bookings - a.bookings; });
+    var max = sorted[0] ? sorted[0].bookings : 1;
+    if (max === 0) max = 1;
+    var lb = document.getElementById('leaderboard');
+    lb.innerHTML = '';
+
+    for (var i = 0; i < sorted.length; i++) {
+      var m = sorted[i];
+      var pct = Math.round((m.bookings / max) * 100);
+      var row = document.createElement('div');
+      row.className = 'lb-row' + (i === 0 ? ' first' : '');
+      var tlBadge = m.isTL ? '<span class="tl-badge">TL</span>' : '';
+      row.innerHTML =
+        '<span class="rank ' + (RANK_CLASS[i] || '') + '">' + (i + 1) + '</span>' +
+        '<span class="member-name">' + m.name + tlBadge + '</span>' +
+        '<div class="bar-wrap"><div class="bar-fill ' + (i === 0 ? 'top' : '') + '" style="width:' + pct + '%"></div></div>' +
+        '<span class="booking-count">' + m.bookings + '</span>';
+      lb.appendChild(row);
+    }
+
+    var total = members.reduce(function(s, m) { return s + m.bookings; }, 0);
+    document.getElementById('team-total').textContent = total;
+    document.getElementById('stat-active').textContent = members.filter(function(m) { return m.bookings > 0; }).length;
+    document.getElementById('stat-avg').textContent = members.length ? Math.round(total / members.length) : 0;
+  }
+
+  function renderAward(winner) {
+    var el = document.getElementById('award-display');
+    if (!winner || winner.trim() === '') {
+      el.innerHTML = '<p class="award-empty">Not yet awarded</p>';
+    } else {
+      el.innerHTML = '<p class="award-name">' + winner.trim() + '</p><p class="award-sub">Today\'s top performer</p>';
+    }
+  }
+
+  function fetchData() {
+    fetch(API)
+      .then(function(res) { return res.text(); })
+      .then(function(text) {
+        var rows = parseCSV(text);
+        var awardRow = null;
+        var members = [];
+        for (var i = 0; i < rows.length; i++) {
+          if (rows[i].name.toLowerCase() === '__award__') {
+            awardRow = rows[i];
+          } else {
+            members.push({
+              name: rows[i].name,
+              bookings: parseInt(rows[i].colB) || 0,
+              isTL: rows[i].role === 'TL'
+            });
+          }
+        }
+        renderLeaderboard(members);
+        renderAward(awardRow ? awardRow.colB : '');
+        document.getElementById('update-time').textContent =
+          'Live \u00b7 Last updated ' + new Date().toLocaleTimeString('en-AU', {
+            hour: '2-digit', minute: '2-digit', second: '2-digit'
+          });
+        document.getElementById('live-dot').style.background = '#22c55e';
+      })
+      .catch(function() {
+        document.getElementById('update-time').innerHTML = '<span class="error-msg">Could not load sheet \u2014 check sharing settings</span>';
+        document.getElementById('live-dot').style.background = '#ef4444';
+      });
+  }
+
+  setDate();
+  fetchData();
+  setInterval(fetchData, REFRESH_MS);
+  setInterval(setDate, 60000);
+</script>
+
+</body>
+</html>
