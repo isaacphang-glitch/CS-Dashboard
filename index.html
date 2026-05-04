@@ -1,77 +1,484 @@
-function doGet() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  
-  var rosterSheet = ss.getSheetByName('Roster');
-  var rosterData = rosterSheet.getDataRange().getValues();
-  var roster = [];
-  var award = '';
-  
-  for (var i = 1; i < rosterData.length; i++) {
-    var name = String(rosterData[i][0]).trim();
-    if (!name) continue;
-    if (name.toLowerCase() === '__award__') {
-      award = String(rosterData[i][1]).trim();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS Bookings — Daily Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #0a0910;
+    color: #e8e6f0;
+    font-family: 'DM Sans', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 32px 16px;
+    height: 100vh;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #1e1b2e;
+    flex-shrink: 0;
+  }
+
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .page-subtitle { font-size: 12px; color: #6b6880; }
+
+  .header-stats { display: flex; gap: 10px; }
+
+  .hstat {
+    background: #16141f;
+    border: 1px solid #2a2835;
+    border-radius: 10px;
+    padding: 8px 18px;
+    text-align: center;
+    min-width: 100px;
+  }
+
+  .hstat.accent { border-color: #7c3aed50; }
+
+  .hstat-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6b6880;
+    margin-bottom: 2px;
+  }
+
+  .hstat-value {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #a78bfa;
+    line-height: 1;
+  }
+
+  .hstat-value.white { color: #e8e6f0; }
+
+  /* MAIN */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 14px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+  }
+
+  .today-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .bottom-row {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    min-height: 0;
+  }
+
+  .lb-col {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .col-title {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #4a4760;
+    margin-bottom: 7px;
+    flex-shrink: 0;
+  }
+
+  .leaderboard {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* rows stretch evenly to fill the leaderboard container */
+  .lb-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #16141f;
+    border-radius: 9px;
+    border: 1px solid #1e1b2e;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .lb-row + .lb-row { margin-top: 6px; }
+
+  .lb-row.size-lg { padding: 0 18px; }
+  .lb-row.size-sm { padding: 0 14px; }
+  .lb-row.first   { border-color: #7c3aed50; background: #1a1628; }
+  .lb-row.offline { opacity: 0.35; background: #13111a; border-color: #1e1b2e; }
+
+  .rank {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    color: #3d3a52;
+    flex-shrink: 0;
+  }
+
+  .rank.lg { font-size: 13px; width: 20px; }
+  .rank.sm { font-size: 10px; width: 16px; }
+  .rank.gold   { color: #f59e0b; }
+  .rank.silver { color: #94a3b8; }
+  .rank.bronze { color: #c2855a; }
+
+  .member-name {
+    flex: 1;
+    font-weight: 400;
+    color: #c4c1d4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .member-name.lg { font-size: 15px; }
+  .member-name.sm { font-size: 12px; }
+
+  .tl-badge {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    background: #2d2040;
+    color: #a78bfa;
+    border: 1px solid #7c3aed40;
+    border-radius: 3px;
+    padding: 1px 5px;
+    flex-shrink: 0;
+  }
+
+  .offline-badge {
+    font-size: 8px;
+    font-weight: 700;
+    background: #1e1b2e;
+    color: #4a4760;
+    border: 1px solid #2a2835;
+    border-radius: 3px;
+    padding: 1px 5px;
+    flex-shrink: 0;
+  }
+
+  .bar-wrap {
+    height: 5px;
+    background: #2a2835;
+    border-radius: 3px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .bar-wrap.lg { width: 120px; }
+  .bar-wrap.sm { width: 60px; }
+
+  .bar-fill { height: 100%; border-radius: 3px; background: #5b21b6; transition: width 0.6s ease; }
+  .bar-fill.top { background: #a78bfa; }
+  .lb-row.offline .bar-fill { background: #2a2835; }
+
+  .booking-count {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    color: #e8e6f0;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .booking-count.lg { font-size: 20px; min-width: 26px; }
+  .booking-count.sm { font-size: 13px; min-width: 18px; }
+  .lb-row.offline .booking-count { color: #3d3a52; }
+
+  /* SIDEBAR */
+  .right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+  }
+
+  .award-card {
+    background: #16141f;
+    border: 1px solid #7c3aed40;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+
+  .award-star { font-size: 26px; line-height: 1; margin-bottom: 8px; }
+
+  .award-title {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #4a4760;
+    margin-bottom: 8px;
+  }
+
+  .award-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 3px;
+    line-height: 1.1;
+  }
+
+  .award-sub { font-size: 11px; color: #a78bfa; }
+  .award-empty { font-size: 12px; color: #3d3a52; font-style: italic; }
+
+  .stat-card {
+    background: #16141f;
+    border: 1px solid #1e1b2e;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .stat-val {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #e8e6f0;
+    line-height: 1;
+  }
+
+  .stat-lbl { font-size: 10px; color: #6b6880; margin-top: 3px; }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+    flex-shrink: 0;
+    gap: 7px;
+    font-size: 10px;
+    color: #3d3a52;
+  }
+
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.2; }
+  }
+
+  .error-msg { color: #ef4444; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1 class="page-title">CS Bookings</h1>
+    <p class="page-subtitle" id="today-date"></p>
+  </div>
+  <div class="header-stats">
+    <div class="hstat accent">
+      <p class="hstat-label">Today</p>
+      <p class="hstat-value" id="total-daily">&#8212;</p>
+    </div>
+    <div class="hstat">
+      <p class="hstat-label">This week</p>
+      <p class="hstat-value white" id="total-weekly">&#8212;</p>
+    </div>
+    <div class="hstat">
+      <p class="hstat-label">This month</p>
+      <p class="hstat-value white" id="total-monthly">&#8212;</p>
+    </div>
+    <div class="hstat">
+      <p class="hstat-label">Online now</p>
+      <p class="hstat-value white" id="stat-online">&#8212;</p>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="left-col">
+    <div class="today-section">
+      <p class="col-title">Today</p>
+      <div class="leaderboard" id="lb-daily"></div>
+    </div>
+    <div class="bottom-row">
+      <div class="lb-col">
+        <p class="col-title">This week</p>
+        <div class="leaderboard" id="lb-weekly"></div>
+      </div>
+      <div class="lb-col">
+        <p class="col-title">This month</p>
+        <div class="leaderboard" id="lb-monthly"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-col">
+    <div class="award-card">
+      <div class="award-star">&#9733;</div>
+      <p class="award-title">Power Player</p>
+      <div id="award-display">
+        <p class="award-empty">Not yet awarded</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <p class="stat-val" id="stat-avg">&#8212;</p>
+      <p class="stat-lbl">Avg bookings today</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="live-dot" id="live-dot"></div>
+  <span id="update-time">Connecting to sheet...</span>
+</div>
+
+<script>
+  var API = 'https://script.google.com/macros/s/AKfycbxfXi8hUapMrmMyVC0CebFmu3QKsd-NqO1wRsR0MZ1ORg4-LFF6MCzmXh5aB-On_47r/exec';
+  var REFRESH_MS = 30000;
+  var RANK_CLASS = ['gold', 'silver', 'bronze'];
+
+  function setDate() {
+    document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-AU', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+  }
+
+  function buildLeaderboard(containerId, members, period, size) {
+    var active        = members.filter(function(m) { return m.status === 'active'; });
+    var offline       = members.filter(function(m) { return m.status !== 'active'; });
+    var activeSorted  = active.slice().sort(function(a, b) { return b[period] - a[period]; });
+    var offlineSorted = offline.slice().sort(function(a, b) { return b[period] - a[period]; });
+    var sorted        = activeSorted.concat(offlineSorted);
+    var max           = (activeSorted[0] && activeSorted[0][period] > 0) ? activeSorted[0][period] : 1;
+    var lb            = document.getElementById(containerId);
+    lb.innerHTML      = '';
+    var rank          = 0;
+
+    for (var i = 0; i < sorted.length; i++) {
+      var m       = sorted[i];
+      var isOff   = m.status !== 'active';
+      if (!isOff) rank++;
+      var pct     = Math.round((m[period] / max) * 100);
+      var isFirst = (i === 0 && !isOff && m[period] > 0);
+      var row     = document.createElement('div');
+      row.className = 'lb-row size-' + size + (isFirst ? ' first' : '') + (isOff ? ' offline' : '');
+
+      var rankStr  = isOff ? '&#8212;' : rank;
+      var rankCls  = (isOff ? '' : (RANK_CLASS[rank - 1] || '')) + ' ' + size;
+      var tlBadge  = m.role === 'TL' ? '<span class="tl-badge">TL</span>' : '';
+      var offBadge = isOff ? '<span class="offline-badge">Offline</span>' : '';
+
+      row.innerHTML =
+        '<span class="rank ' + rankCls + '">' + rankStr + '</span>' +
+        '<span class="member-name ' + size + '">' + m.name + tlBadge + offBadge + '</span>' +
+        '<div class="bar-wrap ' + size + '"><div class="bar-fill ' + (isFirst ? 'top' : '') + '" style="width:' + pct + '%"></div></div>' +
+        '<span class="booking-count ' + size + '">' + m[period] + '</span>';
+      lb.appendChild(row);
+    }
+  }
+
+  function renderAward(winner) {
+    var el = document.getElementById('award-display');
+    if (!winner || winner.trim() === '') {
+      el.innerHTML = '<p class="award-empty">Not yet awarded</p>';
     } else {
-      roster.push({
-        name: name,
-        status: String(rosterData[i][1]).trim().toLowerCase(),
-        role: String(rosterData[i][2]).trim().toUpperCase()
+      el.innerHTML = '<p class="award-name">' + winner.trim() + '</p><p class="award-sub">Today's Power Player</p>';
+    }
+  }
+
+  function renderAll(data) {
+    var members      = data.members;
+    buildLeaderboard('lb-daily',   members, 'daily',   'lg');
+    buildLeaderboard('lb-weekly',  members, 'weekly',  'sm');
+    buildLeaderboard('lb-monthly', members, 'monthly', 'sm');
+    renderAward(data.award);
+
+    var active       = members.filter(function(m) { return m.status === 'active'; });
+    var totalDaily   = members.reduce(function(s, m) { return s + m.daily;   }, 0);
+    var totalWeekly  = members.reduce(function(s, m) { return s + m.weekly;  }, 0);
+    var totalMonthly = members.reduce(function(s, m) { return s + m.monthly; }, 0);
+    var activeDaily  = active.reduce(function(s, m)  { return s + m.daily;   }, 0);
+
+    document.getElementById('total-daily').textContent   = totalDaily;
+    document.getElementById('total-weekly').textContent  = totalWeekly;
+    document.getElementById('total-monthly').textContent = totalMonthly;
+    document.getElementById('stat-online').textContent   = active.length;
+    document.getElementById('stat-avg').textContent      = active.length ? Math.round(activeDaily / active.length) : 0;
+  }
+
+  function fetchData() {
+    fetch(API)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        renderAll(data);
+        document.getElementById('update-time').textContent =
+          'Live \u00b7 Last updated ' + new Date().toLocaleTimeString('en-AU', {
+            hour: '2-digit', minute: '2-digit', second: '2-digit'
+          });
+        document.getElementById('live-dot').style.background = '#22c55e';
+      })
+      .catch(function(err) {
+        console.error(err);
+        document.getElementById('update-time').innerHTML = '<span class="error-msg">Could not load sheet \u2014 check Apps Script deployment</span>';
+        document.getElementById('live-dot').style.background = '#ef4444';
       });
-    }
   }
 
-  var logSheet = ss.getSheetByName('Log');
-  var logData = logSheet.getDataRange().getValues();
-  
-  var now = new Date();
-  var todayStr = Utilities.formatDate(now, Session.getScriptTimeZone(), 'yyyy-MM-dd');
-  
-  var weekStart = new Date(now);
-  weekStart.setDate(now.getDate() - ((now.getDay() + 6) % 7));
-  var weekStartStr = Utilities.formatDate(weekStart, Session.getScriptTimeZone(), 'yyyy-MM-dd');
-  
-  var monthStartStr = Utilities.formatDate(new Date(now.getFullYear(), now.getMonth(), 1), Session.getScriptTimeZone(), 'yyyy-MM-dd');
+  setDate();
+  fetchData();
+  setInterval(fetchData, REFRESH_MS);
+  setInterval(setDate, 60000);
+</script>
 
-  var daily = {}, weekly = {}, monthly = {};
-  
-  for (var j = 1; j < logData.length; j++) {
-    var raw = logData[j][0];
-    if (!raw) continue;
-    var agent = String(logData[j][1]).trim();
-    var bookings = parseInt(logData[j][2]) || 0;
-    if (!agent) continue;
-    
-    var entryStr;
-    if (raw instanceof Date) {
-      entryStr = Utilities.formatDate(raw, Session.getScriptTimeZone(), 'yyyy-MM-dd');
-    } else {
-      var parts = String(raw).split('/');
-      if (parts.length !== 3) continue;
-      var d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
-      entryStr = Utilities.formatDate(d, Session.getScriptTimeZone(), 'yyyy-MM-dd');
-    }
-    
-    if (!daily[agent])   daily[agent]   = 0;
-    if (!weekly[agent])  weekly[agent]  = 0;
-    if (!monthly[agent]) monthly[agent] = 0;
-    
-    if (entryStr === todayStr)        daily[agent]   += bookings;
-    if (entryStr >= weekStartStr)     weekly[agent]  += bookings;
-    if (entryStr >= monthStartStr)    monthly[agent] += bookings;
-  }
-
-  var members = roster.map(function(m) {
-    return {
-      name:     m.name,
-      status:   m.status,
-      role:     m.role,
-      daily:    daily[m.name]   || 0,
-      weekly:   weekly[m.name]  || 0,
-      monthly:  monthly[m.name] || 0
-    };
-  });
-
-  return ContentService
-    .createTextOutput(JSON.stringify({ members: members, award: award }))
-    .setMimeType(ContentService.MimeType.JSON);
-}
+</body>
+</html>
